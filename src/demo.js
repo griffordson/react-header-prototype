@@ -22,10 +22,13 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Button from "@material-ui/core/Button";
 import _ from "lodash";
+import FullMenu from "./full-menu.js";
+import compose from "recompose/compose";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 
 const styles = {
   root: {
-    flexGrow: 2
+    flexGrow: 1
   },
   flex: {
     flexGrow: 1
@@ -85,8 +88,27 @@ class MenuAppBar extends React.Component {
     this.setState({ mainAnchorEl: null });
   };
 
+  menuSelect = (classes, open, width) => {
+    if(isWidthDown("sm", width)) {
+      return (
+            <IconButton
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="Menu"
+              onClick={this.handleMainMenu}
+              aria-owns={open ? "menu-appbar-main" : null}
+            >
+              <MenuIcon />
+            </IconButton>
+      );
+    }
+    else {
+      return <FullMenu />;
+    }
+  };
+
   render() {
-    const { classes } = this.props;
+    const { classes, width } = this.props;
     const { auth, anchorEl, mainAnchorEl } = this.state;
     const open = Boolean(anchorEl);
     const mainOpen = Boolean(mainAnchorEl);
@@ -108,15 +130,7 @@ class MenuAppBar extends React.Component {
 
         <AppBar position="static">
           <Toolbar>
-            <IconButton
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="Menu"
-              onClick={this.handleMainMenu}
-              aria-owns={open ? "menu-appbar-main" : null}
-            >
-              <MenuIcon />
-            </IconButton>
+      {this.menuSelect(classes, open, width)}
             <Dialog
               id="menu-appbar-main"
               open={mainOpen}
@@ -238,7 +252,6 @@ class MenuAppBar extends React.Component {
             >
               FPO
             </Typography>
-            <div className={classes.flex} />
             {auth && (
               <div>
                 <IconButton>
@@ -280,7 +293,12 @@ class MenuAppBar extends React.Component {
 }
 
 MenuAppBar.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+	width: PropTypes.string.isRequired
 };
 
-export default withStyles(styles)(MenuAppBar);
+// export default withStyles(styles)(MenuAppBar);
+export default compose(
+  withWidth(),
+  withStyles(styles),
+)(MenuAppBar);

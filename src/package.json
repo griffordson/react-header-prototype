@@ -7,7 +7,8 @@
     "lodash": "4.17.10",
     "prop-types": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "recompose": "0.27.1"
   },
   "keywords": [],
   "name": "new-header"
