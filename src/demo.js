@@ -25,8 +25,8 @@ import _ from "lodash";
 
 const styles = {
   root: {
-    flexGrow: 1
-    //display: 'none'
+    flexGrow: 1,
+    display: "none"
   },
   flex: {
     flexGrow: 1
