@@ -5,6 +5,11 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import HelpIcon from "@material-ui/icons/Help";
 import SettingsIcon from "@material-ui/icons/Settings";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import compose from "recompose/compose";
+import MapIcon from "@material-ui/icons/Map";
+import PlaceIcon from "@material-ui/icons/Place";
+import WorkIcon from "@material-ui/icons/Work";
 
 const styles = {
   root: {
@@ -19,18 +24,40 @@ const styles = {
 };
 
 class FpoFullMenu extends React.Component {
+	state = {
+	};
+
+  buttonContent = (label, width, content) => {
+    if(isWidthDown("md", width)) {
+      return content;
+    }
+    else {
+      return label;
+    }
+  };
+
   render() {
-    const {classes} = this.props;
+    const {classes, onMasterMap, width} = this.props;
+
     return (
-      <div ref='fullMenu' className={classes.root}>
-        <Button className={classes.button}>
-          Master Map
+      <div className={classes.root}>
+        <Button className={classes.button} onClick={onMasterMap}>
+      {this.buttonContent("Master Map", width, 
+        <MapIcon>
+        </MapIcon>
+      )}
         </Button>
         <Button className={classes.button}>
-          Jobs
+      {this.buttonContent("Jobs", width, 
+        <PlaceIcon>
+        </PlaceIcon>
+      )}
         </Button>
         <Button className={classes.button}>
-          Batches
+      {this.buttonContent("Batches", width, 
+        <WorkIcon>
+        </WorkIcon>
+      )}
         </Button>
         <Button className={classes.button}>
           Log Files
@@ -59,7 +86,13 @@ class FpoFullMenu extends React.Component {
 };
 
 FpoFullMenu.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  onMasterMap: PropTypes.func.isRequired,
+  width: PropTypes.string.isRequired
 };
 
-export default withStyles(styles)(FpoFullMenu);
+// export default withStyles(styles)(FpoFullMenu);
+export default compose(
+  withWidth(),
+  withStyles(styles),
+)(FpoFullMenu);

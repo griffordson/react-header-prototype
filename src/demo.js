@@ -25,6 +25,8 @@ import _ from "lodash";
 import FullMenu from "./full-menu.js";
 import compose from "recompose/compose";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import MasterMapSampleData from "./master-map-sample-data.js";
+import MasterMapFilter from "./master-map-filter";
 
 const styles = {
   root: {
@@ -58,14 +60,23 @@ const styles = {
   },
   textField: {
     width: 160
-  }
+  },
 };
 
 class MenuAppBar extends React.Component {
   state = {
     auth: true,
     anchorEl: null,
-    mainAnchorEl: null
+    mainAnchorEl: null,
+    masterMapOpen: false
+  };
+
+	handleMasterMap = () => {
+		this.setState({masterMapOpen: true});
+	};
+
+  handleMasterMapClose = () => {
+    this.setState({masterMapOpen: false});
   };
 
   handleChange = (event, checked) => {
@@ -89,7 +100,7 @@ class MenuAppBar extends React.Component {
   };
 
   menuSelect = (classes, open, width) => {
-    if(isWidthDown("sm", width)) {
+    if(isWidthDown("xs", width)) {
       return (
             <IconButton
               className={classes.menuButton}
@@ -103,13 +114,15 @@ class MenuAppBar extends React.Component {
       );
     }
     else {
-      return <FullMenu />;
+      return <FullMenu onMasterMap={this.handleMasterMap} />;
     }
   };
 
   render() {
+		const sample = MasterMapSampleData();
+		console.log(sample);
     const { classes, width } = this.props;
-    const { auth, anchorEl, mainAnchorEl } = this.state;
+    const { auth, anchorEl, mainAnchorEl, masterMapOpen} = this.state;
     const open = Boolean(anchorEl);
     const mainOpen = Boolean(mainAnchorEl);
 
@@ -287,6 +300,12 @@ class MenuAppBar extends React.Component {
             )}
           </Toolbar>
         </AppBar>
+        
+        <MasterMapFilter 
+          open={masterMapOpen}
+          onClose={this.handleMasterMapClose}
+
+        />
       </div>
     );
   }
