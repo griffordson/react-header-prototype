@@ -7,6 +7,7 @@ import HelpIcon from "@material-ui/icons/Help";
 import SettingsIcon from "@material-ui/icons/Settings";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import compose from "recompose/compose";
+import MedMenu from "./med-menu";
 import MapIcon from "@material-ui/icons/Map";
 import PlaceIcon from "@material-ui/icons/Place";
 import WorkIcon from "@material-ui/icons/Work";
@@ -20,6 +21,9 @@ const styles = {
     textTransform: 'none',
 		paddingLeft: 8,
 		paddingRight: 8
+  },
+  innerIcon: {
+    paddingRight: 8
   }
 };
 
@@ -27,37 +31,23 @@ class FpoFullMenu extends React.Component {
 	state = {
 	};
 
-  buttonContent = (label, width, content) => {
+  buttonContent = (classes, onMasterMap, width) => {
     if(isWidthDown("md", width)) {
-      return content;
+      return ( 
+        <MedMenu onMasterMap={onMasterMap} />
+      )
     }
     else {
-      return label;
-    }
-  };
-
-  render() {
-    const {classes, onMasterMap, width} = this.props;
-
-    return (
-      <div className={classes.root}>
+      return (
+        <div>
         <Button className={classes.button} onClick={onMasterMap}>
-      {this.buttonContent("Master Map", width, 
-        <MapIcon>
-        </MapIcon>
-      )}
+          <MapIcon className={classes.innerIcon} /> Master Map
         </Button>
         <Button className={classes.button}>
-      {this.buttonContent("Jobs", width, 
-        <PlaceIcon>
-        </PlaceIcon>
-      )}
+          <PlaceIcon className={classes.innerIcon} /> Jobs
         </Button>
         <Button className={classes.button}>
-      {this.buttonContent("Batches", width, 
-        <WorkIcon>
-        </WorkIcon>
-      )}
+          <WorkIcon className={classes.innerIcon} /> Batches
         </Button>
         <Button className={classes.button}>
           Log Files
@@ -74,12 +64,24 @@ class FpoFullMenu extends React.Component {
         <Button className={classes.button}>
           Reports
         </Button>
+
         <IconButton className={classes.button}>
           <SettingsIcon />
         </IconButton>
         <IconButton className={classes.button}>
           <HelpIcon />
         </IconButton>
+        </div>
+      );
+    }
+  };
+
+  render() {
+    const {classes, onMasterMap, width} = this.props;
+
+    return (
+      <div className={classes.root}>
+        {this.buttonContent(classes, onMasterMap, width)}
       </div>
     );
   };
