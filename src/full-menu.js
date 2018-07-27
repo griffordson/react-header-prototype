@@ -17,7 +17,8 @@ const styles = {
     flex: 1
   },
   button: {
-    color: 'white',
+    // color: "rgba(0, 51, 102, 1)",
+    color: "white",
     textTransform: 'none',
 		paddingLeft: 8,
 		paddingRight: 8
